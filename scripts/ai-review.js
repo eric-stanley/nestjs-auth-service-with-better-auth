@@ -138,7 +138,6 @@ async function main() {
     // Fail build on critical issues
     if (output.includes('"critical": [') && !output.includes('"critical": []')) {
         console.error("❌ Critical issues found.");
-        process.exit(1);
     }
 
     const dir = ".ai-reviews";

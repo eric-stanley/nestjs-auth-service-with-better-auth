@@ -133,16 +133,6 @@ async function main() {
 
     const output = response.choices[0].message.content;
 
-    const bodyFile = ".ai-review-comment.md";
-
-    // Write the AI output to a file
-    fs.writeFileSync(bodyFile, output, "utf8");
-
-    // Post comment using file
-    execSync(`gh pr comment --body-file ${bodyFile}`, {
-        stdio: "inherit",
-    });
-
     console.log(`${REVIEW_TAG}\n${output}`);
 
     // Fail build on critical issues

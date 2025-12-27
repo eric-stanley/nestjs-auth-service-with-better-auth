@@ -133,14 +133,15 @@ async function main() {
 
     const output = response.choices[0].message.content;
 
-    run(`
-    gh pr comment --body "${REVIEW_TAG}
-    🤖 AI Code Review
-    \`\`\`json
-    ${output}
-    \`\`\`
-    "
-    `);
+    const bodyFile = ".ai-review-comment.md";
+
+    // Write the AI output to a file
+    fs.writeFileSync(bodyFile, output, "utf8");
+
+    // Post comment using file
+    execSync(`gh pr comment --body-file ${bodyFile}`, {
+        stdio: "inherit",
+    });
 
     console.log(`${REVIEW_TAG}\n${output}`);
 

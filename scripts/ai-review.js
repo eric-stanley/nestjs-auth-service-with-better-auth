@@ -147,11 +147,13 @@ async function main() {
 
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
 
-    const reviewPath = path.join(dir, `${timestamp}.json`);
-    const latestPath = path.join(dir, "latest.json");
+    const reviewPath = path.join(dir, `${timestamp}.md`);
+    const latestPath = path.join(dir, "latest.md");
 
-    fs.writeFileSync(reviewPath, JSON.stringify(output, null, 2));
-    fs.writeFileSync(latestPath, JSON.stringify(output, null, 2));
+    const markdown = renderMarkdown(output);
+
+    fs.writeFileSync(reviewPath, markdown);
+    fs.writeFileSync(latestPath, markdown);
 
     console.log(`AI review saved to ${reviewPath}`);
 }
@@ -160,3 +162,47 @@ main().catch(err => {
     console.error(err);
     process.exit(1);
 });
+
+function renderMarkdown(review) {
+    const status = review.critical?.length ? "❌ FAIL" : "✅ PASS";
+
+    const section = (title, items = []) =>
+        items.length
+            ? `## ${title}\n\n${items.map(i => `- ${i}`).join("\n")}\n\n`
+            : "";
+
+    const filesTable = review.files
+        ? `
+## 📂 File-Level Notes
+
+| File | Review |
+|------|--------|
+${Object.entries(review.files)
+            .map(([file, note]) => `| \`${file}\` | ${note} |`)
+            .join("\n")}
+`
+        : "";
+
+    return `# 🤖 AI Code Review
+
+**Status:** ${status}  
+**Timestamp:** ${new Date().toISOString()}
+
+---
+
+## 🧾 Summary
+${review.summary}
+
+---
+
+${section("❌ Critical Issues", review.critical)}
+${section("⚠️ Warnings", review.warnings)}
+${section("💡 Suggestions", review.suggestions)}
+
+${filesTable}
+
+---
+
+*Generated automatically by AI Review Bot*
+`;
+}

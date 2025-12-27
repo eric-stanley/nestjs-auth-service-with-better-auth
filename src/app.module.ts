@@ -1,4 +1,9 @@
 import { Module } from '@nestjs/common';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { GraphQLExceptionFilter } from './common/filters/graphql-exception.filter';
+import { MongoExceptionFilter } from './common/filters/mongo-exception.filter';
+import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
+import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -36,6 +41,23 @@ import { UsersModule } from './users/users.module';
     UsersModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: GraphQLExceptionFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: MongoExceptionFilter,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: TransformInterceptor,
+    },
+  ],
 })
 export class AppModule { }

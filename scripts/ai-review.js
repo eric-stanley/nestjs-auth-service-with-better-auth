@@ -140,6 +140,21 @@ async function main() {
         console.error("❌ Critical issues found.");
         process.exit(1);
     }
+
+    const dir = ".ai-reviews";
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir);
+    }
+
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+
+    const reviewPath = path.join(dir, `${timestamp}.json`);
+    const latestPath = path.join(dir, "latest.json");
+
+    fs.writeFileSync(reviewPath, JSON.stringify(output, null, 2));
+    fs.writeFileSync(latestPath, JSON.stringify(output, null, 2));
+
+    console.log(`AI review saved to ${reviewPath}`);
 }
 
 main().catch(err => {

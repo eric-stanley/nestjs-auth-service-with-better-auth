@@ -30,3 +30,11 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/ai-review.js
+
+      - name: Commit AI review
+        run: |
+          git config user.name "ai-review-bot"
+          git config user.email "ai-review@users.noreply.github.com"
+          git add .ai-reviews
+          git commit -m "chore(ai): automated code review"
+          git push

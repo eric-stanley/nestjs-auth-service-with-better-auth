@@ -150,7 +150,7 @@ async function main() {
     const reviewPath = path.join(dir, `${timestamp}.md`);
     const latestPath = path.join(dir, "latest.md");
 
-    const markdown = renderMarkdown(output);
+    const markdown = renderMarkdown(JSON.parse(output));
 
     fs.writeFileSync(reviewPath, markdown);
     fs.writeFileSync(latestPath, markdown);

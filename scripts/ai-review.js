@@ -10,6 +10,13 @@ const client = new OpenAI({
 const REVIEW_TAG = "[AI-CODE-REVIEW]";
 const MAX_CHARS = 12000;
 
+const personas = [
+    "Security-focused senior backend engineer",
+    "Production SRE",
+    "NestJS framework maintainer",
+    "Backend architect reviewing for scalability"
+];
+
 // ---------- helpers ----------
 
 function run(cmd) {
@@ -131,11 +138,23 @@ async function main() {
         firstReview ? "FULL_REVIEW" : "INCREMENTAL"
     );
 
+    const persona = personas[Math.floor(Math.random() * personas.length)];
+
     const response = await client.chat.completions.create({
         model: "gpt-4o-mini",
         temperature: 0.7,
-        max_tokens: 2048,
-        messages: [{ role: "user", content: prompt }]
+        messages: [
+            {
+                role: "system",
+                content: `
+    You are a ${persona}.
+    Vary wording and phrasing across reviews.
+    Preserve technical correctness.
+    Do not repeat exact sentences from prior reviews.
+    `
+            },
+            { role: "user", content: prompt }
+        ]
     });
 
     const output = response.choices[0].message.content;

@@ -18,9 +18,9 @@ function run(cmd) {
 
 function getChangedFiles() {
     try {
-        return run("git diff --name-only origin/main...HEAD")
-            .split("\n")
-            .filter(Boolean);
+        const committed = run("git diff --name-only origin/main...HEAD").split("\n");
+        const local = run("git diff --name-only HEAD").split("\n");
+        return [...new Set([...committed, ...local])].filter(Boolean);
     } catch {
         return [];
     }

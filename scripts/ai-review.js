@@ -131,6 +131,8 @@ async function main() {
         firstReview ? "FULL_REVIEW" : "INCREMENTAL"
     );
 
+    console.log(prompt);
+
     const response = await client.chat.completions.create({
         model: "gpt-4o-mini",
         temperature: 0,

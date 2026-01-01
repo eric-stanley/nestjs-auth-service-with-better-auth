@@ -134,6 +134,7 @@ async function main() {
     const response = await client.chat.completions.create({
         model: "gpt-4o-mini",
         temperature: 0.7,
+        max_tokens: 256,
         messages: [{ role: "user", content: prompt }],
     });
 

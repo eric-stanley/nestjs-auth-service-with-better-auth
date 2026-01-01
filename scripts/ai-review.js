@@ -235,4 +235,3 @@ ${filesTable}
 *Generated automatically by AI Review Bot*
 `;
 }
-

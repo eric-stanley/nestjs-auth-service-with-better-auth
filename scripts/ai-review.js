@@ -138,8 +138,6 @@ async function main() {
         firstReview ? "FULL_REVIEW" : "INCREMENTAL"
     );
 
-    const persona = personas[Math.floor(Math.random() * personas.length)];
-
     const response = await client.chat.completions.create({
         model: "gpt-4o-mini",
         temperature: 0.7,

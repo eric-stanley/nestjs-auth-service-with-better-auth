@@ -21,7 +21,7 @@ export class AuthService implements OnModuleInit {
 
   onModuleInit() {
     this.auth = betterAuth({
-      database: mongodbAdapter(this.connection.db as any), // Cast to any to avoid complex type match for now
+      database: mongodbAdapter(this.connection.db!),
       customSession: {
         // If we need to modify session return
       },

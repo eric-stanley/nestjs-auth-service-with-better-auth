@@ -101,7 +101,7 @@ Output format:
   "critical": [],
   "warnings": [],
   "suggestions": [],
-  "files": {}
+  "files": { "filename": "string" }
 }
 
 Files to review:
@@ -178,7 +178,10 @@ function renderMarkdown(review) {
 | File | Review |
 |------|--------|
 ${Object.entries(review.files)
-            .map(([file, note]) => `| \`${file}\` | ${note} |`)
+            .map(([file, note]) => {
+                const text = typeof note === 'object' ? JSON.stringify(note) : note;
+                return `| \`${file}\` | ${text} |`;
+            })
             .join("\n")}
 `
         : "";

@@ -186,7 +186,7 @@ function renderMarkdown(review) {
 ${Object.entries(review.files)
             .map(([file, note]) => {
                 const text = typeof note === 'object' ? JSON.stringify(note) : note;
-                return `| \`${file}\` | \`${text}\` |`;
+                return `| \`${file}\` | \```json${text}\``` |`;
             })
             .join("\n")}
 `

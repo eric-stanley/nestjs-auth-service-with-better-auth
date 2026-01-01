@@ -12,7 +12,10 @@ export class GraphQLExceptionFilter implements GqlExceptionFilter {
         if (exception instanceof HttpException) {
             const status = exception.getStatus();
             const response = exception.getResponse();
-            const message = typeof response === 'object' ? (response as any).message : response;
+            const message =
+                typeof response === 'object' && response !== null && 'message' in response
+                    ? (response as { message: string }).message
+                    : JSON.stringify(response);
 
             return new GraphQLError(message, {
                 extensions: {

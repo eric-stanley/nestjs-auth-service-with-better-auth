@@ -9,10 +9,15 @@ import { InjectConnection } from '@nestjs/mongoose';
 export class AuthService implements OnModuleInit {
   private auth: ReturnType<typeof betterAuth>;
 
+
+  public get staticAuth() {
+    return this.auth;
+  }
+
   constructor(
     private configService: ConfigService,
     @InjectConnection() private connection: Connection,
-  ) {}
+  ) { }
 
   onModuleInit() {
     this.auth = betterAuth({
@@ -69,3 +74,7 @@ export class AuthService implements OnModuleInit {
     return this.auth;
   }
 }
+
+export type Auth = ReturnType<typeof betterAuth>;
+export type Session = Auth['$Infer']['Session'];
+export type User = Auth['$Infer']['Session']['user'];

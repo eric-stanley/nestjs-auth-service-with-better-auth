@@ -26,8 +26,8 @@ export class AuthResponse {
   @Field()
   token: string; // JWT access token
 
-  @Field()
-  refreshToken: string;
+  @Field({ nullable: true })
+  refreshToken?: string;
 
   @Field(() => UserType)
   user: UserType;

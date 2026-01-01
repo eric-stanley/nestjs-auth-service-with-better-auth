@@ -1,5 +1,5 @@
 import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
-import { AuthService } from './auth.service';
+import { AuthService, Session } from './auth.service';
 import { LoginInput, SignUpInput, AuthResponse } from './dto/auth.dto';
 import { AuthContext } from '../common/types';
 
@@ -27,22 +27,14 @@ export class AuthResolver {
       throw new Error('Login failed');
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const res = data as any;
-
     return {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      token: res.session.token,
-      refreshToken: 'REFRESH_TOKEN_NOT_SUPPORTED_IN_THIS_MODE',
+      token: data.token,
+      refreshToken: undefined,
       user: {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        id: res.user.id,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        email: res.user.email,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        name: res.user.name,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        image: res.user.image || '',
+        id: data.user.id,
+        email: data.user.email,
+        name: data.user.name,
+        image: data.user.image || '',
       }
     };
   }
@@ -67,22 +59,14 @@ export class AuthResolver {
       throw new Error('Signup failed');
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const res = data as any;
-
     return {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      token: res.session.token,
-      refreshToken: 'REFRESH_TOKEN_NOT_SUPPORTED_IN_THIS_MODE',
+      token: data.token || '',
+      refreshToken: undefined,
       user: {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        id: res.user.id,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        email: res.user.email,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        name: res.user.name,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        image: res.user.image || '',
+        id: data.user.id,
+        email: data.user.email,
+        name: data.user.name,
+        image: data.user.image || '',
       }
     };
   }

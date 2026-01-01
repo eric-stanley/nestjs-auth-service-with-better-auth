@@ -101,7 +101,13 @@ Output format:
   "critical": [],
   "warnings": [],
   "suggestions": [],
-  "files": { "filename": "string" }
+Output format:
+{
+  "summary": "",
+  "critical": [],
+  "warnings": [],
+  "suggestions": [],
+  "files": { "filename": "review_data" }
 }
 
 Files to review:

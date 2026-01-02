@@ -22,18 +22,6 @@ export class SignUpInput {
 }
 
 @ObjectType()
-export class AuthResponse {
-  @Field()
-  token: string; // JWT access token
-
-  @Field({ nullable: true })
-  refreshToken?: string;
-
-  @Field(() => UserType)
-  user: UserType;
-}
-
-@ObjectType()
 export class UserType {
   @Field()
   id: string;
@@ -46,4 +34,16 @@ export class UserType {
 
   @Field()
   image: string; // Optional if not always present, but sticking to non-nullable based on schema unless specified
+}
+
+@ObjectType()
+export class AuthResponse {
+  @Field()
+  token: string; // JWT access token
+
+  @Field({ nullable: true })
+  refreshToken?: string;
+
+  @Field(() => UserType)
+  user: UserType;
 }
